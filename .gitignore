@@ -1,0 +1,35 @@
+.DS_Store
+.idea/
+.vscode/
+
+# Xcode
+DerivedData/
+build/
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcuserdatad/
+*.xcuserstate
+
+# Swift Package Manager
+.build/
+.swiftpm/
+Packages/
+Package.resolved
+
+# Local tooling artifacts
+.claude/
+.playwright-mcp/
+output/
+
+# Logs and temp files
+*.log
+*.tmp
+.worktrees/
+.air/
+
+# 私人开发笔记 / 对标素材（不公开）— private dev notes & references (do not publish)
+tasks/
+交接给新对话-必读.md
+每日复盘.md
+design/vibe-reference/
+design/sound-candidates/
