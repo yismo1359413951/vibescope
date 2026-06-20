@@ -1,54 +1,26 @@
-<svg width="1024" height="1024" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<defs>
-  <!-- 更饱和的马卡龙紫，保证小尺寸下对比/分量 -->
-  <linearGradient id="sky" x1="0.2" y1="0" x2="0.8" y2="1">
-    <stop offset="0" stop-color="#B79BE8"/>
-    <stop offset="0.5" stop-color="#8A6BD0"/>
-    <stop offset="1" stop-color="#5E45A6"/>
-  </linearGradient>
-  <radialGradient id="sheen" cx="0.3" cy="0.22" r="0.85">
-    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.40"/>
-    <stop offset="0.55" stop-color="#FFFFFF" stop-opacity="0.06"/>
-    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
-  </radialGradient>
-  <linearGradient id="gold" x1="0.2" y1="0" x2="0.8" y2="1">
-    <stop offset="0" stop-color="#FFFBEC"/>
-    <stop offset="0.45" stop-color="#FCE7A6"/>
-    <stop offset="1" stop-color="#E8B85A"/>
-  </linearGradient>
-  <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
-    <stop offset="0" stop-color="#FFF7D8" stop-opacity="1"/>
-    <stop offset="0.42" stop-color="#FBE5A0" stop-opacity="0.75"/>
-    <stop offset="1" stop-color="#FBE5A0" stop-opacity="0"/>
-  </radialGradient>
-  <linearGradient id="trail" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#FFF7DA" stop-opacity="0"/>
-    <stop offset="0.5" stop-color="#FCEAB4" stop-opacity="0.7"/>
-    <stop offset="1" stop-color="#FFFFFF" stop-opacity="1"/>
-  </linearGradient>
-  <clipPath id="sq"><rect x="0" y="0" width="240" height="240" rx="56"/></clipPath>
-  <g id="star"><path d="M0,-10 L2.47,-3.40 L9.51,-3.09 L3.99,1.30 L5.88,8.09 L0,4.2 L-5.88,8.09 L-3.99,1.30 L-9.51,-3.09 L-2.47,-3.40 Z" fill="url(#gold)"/></g>
-  <g id="spark"><path d="M0 -10 C1.4 -2.2 2.2 -1.4 10 0 C2.2 1.4 1.4 2.2 0 10 C-1.4 2.2 -2.2 1.4 -10 0 C-2.2 -1.4 -1.4 -2.2 0 -10 Z" fill="url(#gold)"/></g>
-</defs>
-
-<rect x="0" y="0" width="240" height="240" rx="56" fill="url(#sky)"/>
-<g clip-path="url(#sq)">
-  <rect x="0" y="0" width="240" height="240" fill="url(#sheen)"/>
-
-  <!-- 流动彗星弧：更实更亮，小尺寸也看得清 -->
-  <path d="M40 198 C72 150 100 96 184 64" fill="none" stroke="url(#trail)" stroke-width="6" stroke-linecap="round"/>
-
-  <!-- 帝星：居中偏上，大而亮，强光晕 + 白芯，做绝对主角 -->
-  <circle cx="120" cy="116" r="58" fill="url(#glow)"/>
-  <use xlink:href="#star" transform="translate(120,116) scale(3.4)"/>
-  <circle cx="120" cy="116" r="6" fill="#FFFFFF"/>
-
-  <!-- 醒目星屑（少而精、有分量） -->
-  <use xlink:href="#spark" transform="translate(182,158) scale(0.95)" opacity="1"/>
-  <use xlink:href="#spark" transform="translate(66,150) scale(0.66)" opacity="0.95"/>
-  <use xlink:href="#spark" transform="translate(168,76) scale(0.5)" opacity="0.9"/>
-
-  <circle cx="92" cy="190" r="2.2" fill="#FFFFFF" opacity="0.95"/>
-  <circle cx="200" cy="120" r="1.8" fill="#FFFFFF" opacity="0.9"/>
-</g>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0.2" y1="0.05" x2="0.8" y2="1">
+      <stop offset="0" stop-color="#C6B4E8"/><stop offset="0.55" stop-color="#9479C7"/><stop offset="1" stop-color="#5E4795"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="0.52" cy="0.5" r="0.46">
+      <stop offset="0" stop-color="#FFF7E0" stop-opacity="1"/><stop offset="0.4" stop-color="#F2DCA4" stop-opacity="0.45"/><stop offset="1" stop-color="#F2DCA4" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FCEDBE"/><stop offset="1" stop-color="#E0BD6C"/></linearGradient>
+    <linearGradient id="trail" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EBD296" stop-opacity="0"/><stop offset="1" stop-color="#F8E6AC" stop-opacity="0.9"/></linearGradient>
+    <clipPath id="sq"><rect x="100" y="100" width="824" height="824" rx="185"/></clipPath>
+    <filter id="sh" x="-25%" y="-25%" width="150%" height="160%"><feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#2A1E4A" flood-opacity="0.32"/></filter>
+  </defs>
+  <g filter="url(#sh)"><rect x="100" y="100" width="824" height="824" rx="185" fill="url(#bg)"/></g>
+  <g clip-path="url(#sq)">
+    <rect x="100" y="100" width="824" height="824" fill="url(#bg)"/>
+    <rect x="100" y="100" width="824" height="300" fill="#FFFFFF" opacity="0.08"/>
+    <circle cx="512" cy="512" r="250" fill="url(#halo)"/>
+    <ellipse cx="512" cy="512" rx="248" ry="124" fill="none" stroke="url(#trail)" stroke-width="9" transform="rotate(-28 512 512)" stroke-linecap="round"/>
+    <ellipse cx="512" cy="512" rx="190" ry="92" fill="none" stroke="url(#trail)" stroke-width="6" transform="rotate(22 512 512)" opacity="0.75" stroke-linecap="round"/>
+    <g transform="translate(512,512) scale(104)" fill="url(#gold)" stroke="#F8E8B2" stroke-width="0.012">
+      <path d="M 0 -1 L 0.2245 -0.309 L 0.951 -0.309 L 0.3633 0.118 L 0.5878 0.809 L 0 0.382 L -0.5878 0.809 L -0.3633 0.118 L -0.951 -0.309 L -0.2245 -0.309 Z"/>
+    </g>
+    <g fill="url(#gold)"><circle cx="300" cy="436" r="10"/><circle cx="726" cy="592" r="11"/></g>
+  </g>
 </svg>
