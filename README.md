@@ -1,4 +1,8 @@
-# 紫微 · VibeScope · Ziwei VibeScope
+<p align="center">
+  <img src="docs/images/ziwei-logo.png" alt="紫微 VibeScope" width="160">
+</p>
+
+<h1 align="center">紫微 · VibeScope · Ziwei VibeScope</h1>
 
 > 你的 AI 编程状态岛 —— 一颗为 vibe coding 而亮的小星。
 > A Dynamic Island for your AI coding agents — a little star, lit for vibe coding.
