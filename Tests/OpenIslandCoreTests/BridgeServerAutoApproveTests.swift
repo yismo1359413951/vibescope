@@ -140,6 +140,27 @@ struct BridgeServerAutoApproveTests {
         )
     }
 
+    private func codexPermissionPayload(
+        sessionID: String,
+        command: String,
+        terminalApp: String? = nil,
+        transcriptPath: String? = nil
+    ) -> CodexHookPayload {
+        CodexHookPayload(
+            cwd: "/tmp/worktree",
+            hookEventName: .permissionRequest,
+            model: "gpt-5-codex",
+            permissionMode: .default,
+            sessionID: sessionID,
+            terminalApp: terminalApp,
+            transcriptPath: transcriptPath,
+            turnID: "turn-1",
+            toolName: "Bash",
+            toolUseID: "tool-\(sessionID)",
+            toolInput: CodexHookToolInput(command: command)
+        )
+    }
+
     /// A whitelisted Codex shell command is auto-approved: the bridge answers
     /// immediately (rather than leaving the preToolUse hook blocked).
     /// Codex 的白名单命令被自动批准，立即返回而非阻塞等手动。
@@ -156,6 +177,34 @@ struct BridgeServerAutoApproveTests {
         )
 
         #expect(response == .acknowledged)
+    }
+
+    /// Codex.app can emit a permission request without `transcript_path`.
+    /// That still belongs to the user-facing approval flow and must not be
+    /// filtered as an internal title-generation request.
+    /// Codex 桌面端的审批事件即使没有 transcript，也不能被内部噪音过滤挡掉。
+    @Test
+    func codexAppPermissionRequestWithoutTranscriptAutoApproves() throws {
+        let socketURL = BridgeSocketLocation.uniqueTestURL()
+        let server = BridgeServer(socketURL: socketURL, autoApproveRulesProvider: { .default })
+        try server.start()
+        defer { server.stop() }
+
+        let response = try BridgeCommandClient(socketURL: socketURL).send(
+            .processCodexHook(
+                codexPermissionPayload(
+                    sessionID: "codex-app-permission",
+                    command: "git status",
+                    terminalApp: "Codex.app"
+                )
+            ),
+            timeout: 5
+        )
+
+        guard case .codexHookDirective(.permissionRequest(.allow)) = response else {
+            Issue.record("expected a codex permission allow directive, got \(String(describing: response))")
+            return
+        }
     }
 
     /// With `dangerBehavior == .deny`, a dangerous Codex command is auto-denied.

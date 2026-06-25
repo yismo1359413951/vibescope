@@ -500,8 +500,11 @@ public final class BridgeServer: @unchecked Sendable {
     private func handleCodexHook(_ payload: CodexHookPayload, from clientID: UUID) {
         // Filter out Codex.app internal invocations (e.g. conversation title
         // generation).  These fire hooks but have no transcript file — they're
-        // ephemeral API calls, not user-facing sessions.
+        // ephemeral API calls, not user-facing sessions. PermissionRequest is
+        // the exception: Codex.app can ask for user approval without sending a
+        // transcript path, and dropping that event hides the approval prompt.
         if payload.terminalApp == "Codex.app",
+           payload.hookEventName != .permissionRequest,
            (payload.transcriptPath ?? "").isEmpty {
             send(.response(.acknowledged), to: clientID)
             return
