@@ -29,6 +29,15 @@ final class ProcessMonitoringCoordinator {
     @ObservationIgnored
     var onCodexAppRunningChanged: ((_ isRunning: Bool) -> Void)?
 
+    /// Fires on every reconciliation tick while Codex.app is running.
+    @ObservationIgnored
+    var onCodexAppRunningObserved: (() -> Void)?
+
+    @ObservationIgnored
+    var codexDesktopAppRunningProvider: () -> Bool = {
+        ProcessMonitoringCoordinator.isCodexDesktopAppRunning()
+    }
+
     @ObservationIgnored
     let activeAgentProcessDiscovery = ActiveAgentProcessDiscovery()
 
@@ -121,10 +130,13 @@ final class ProcessMonitoringCoordinator {
         // return — we need to fire the callback on a brand-new Codex.app
         // launch even when no sessions exist yet, so the app-server
         // coordinator can connect and report threads.
-        let isCodexAppRunning = Self.isCodexDesktopAppRunning()
+        let isCodexAppRunning = codexDesktopAppRunningProvider()
         if isCodexAppRunning != wasCodexAppRunning {
             wasCodexAppRunning = isCodexAppRunning
             onCodexAppRunningChanged?(isCodexAppRunning)
+        }
+        if isCodexAppRunning {
+            onCodexAppRunningObserved?()
         }
         let sessions = local.sessions.filter(\.isTrackedLiveSession)
         guard !sessions.isEmpty else {
@@ -275,7 +287,7 @@ final class ProcessMonitoringCoordinator {
                 .compactMap(\.sessionID)
         )
         // Codex.app sessions: keep alive while the desktop app is running.
-        let isCodexAppRunning = Self.isCodexDesktopAppRunning()
+        let isCodexAppRunning = codexDesktopAppRunningProvider()
         for session in sessions where session.tool == .codex && !session.isDemoSession {
             if session.isCodexAppSession {
                 if isCodexAppRunning { aliveIDs.insert(session.id) }

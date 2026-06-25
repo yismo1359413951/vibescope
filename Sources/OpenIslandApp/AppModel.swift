@@ -709,6 +709,9 @@ final class AppModel {
                 self.codexAppServer.disconnect()
             }
         }
+        monitoring.onCodexAppRunningObserved = { [weak self] in
+            self?.discovery.rediscoverCodexAppSessionsIfNeeded()
+        }
         refreshOverlayDisplayConfiguration()
         hasFinishedInit = true
     }
@@ -1530,7 +1533,9 @@ final class AppModel {
         if ingress == .rollout,
            case let .activityUpdated(payload) = event,
            payload.phase == .running,
-           state.session(id: payload.sessionID)?.phase == .completed {
+           let existingSession = state.session(id: payload.sessionID),
+           existingSession.phase == .completed,
+           payload.timestamp < existingSession.updatedAt {
             return
         }
 

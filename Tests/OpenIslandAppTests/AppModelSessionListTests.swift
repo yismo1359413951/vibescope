@@ -212,6 +212,80 @@ struct AppModelSessionListTests {
     }
 
     @Test
+    func codexAppSessionWithRolloutPathTracksFollowUpMessages() async throws {
+        let rootURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent("open-island-codex-app-rollout-\(UUID().uuidString)", isDirectory: true)
+        let rolloutURL = rootURL.appendingPathComponent("rollout.jsonl")
+        try FileManager.default.createDirectory(at: rootURL, withIntermediateDirectories: true)
+        try Data().write(to: rolloutURL)
+
+        defer {
+            try? FileManager.default.removeItem(at: rootURL)
+        }
+
+        let model = AppModel()
+        var session = AgentSession(
+            id: "codex-app-session-1",
+            title: "Codex · app",
+            tool: .codex,
+            origin: .live,
+            attachmentState: .attached,
+            phase: .completed,
+            summary: "Idle.",
+            updatedAt: Date(timeIntervalSince1970: 2_000),
+            jumpTarget: JumpTarget(
+                terminalApp: "Codex.app",
+                workspaceName: "app",
+                paneTitle: "Codex app",
+                workingDirectory: "/tmp/app",
+                codexThreadID: "codex-app-session-1"
+            ),
+            codexMetadata: CodexSessionMetadata(transcriptPath: rolloutURL.path)
+        )
+        session.isCodexAppSession = true
+        session.isProcessAlive = true
+        model.state = SessionState(sessions: [session])
+
+        model.discovery.refreshCodexRolloutTracking()
+        try appendRolloutLine(
+            rolloutLine(
+                timestamp: "2026-06-25T13:30:00.000Z",
+                type: "event_msg",
+                payload: [
+                    "type": "user_message",
+                    "message": "紫微应该看到这条 Codex.app 消息。",
+                ]
+            ),
+            to: rolloutURL
+        )
+
+        try await Task.sleep(for: .milliseconds(3_500))
+        model.discovery.codexRolloutWatcher.stop()
+
+        let updated = model.state.session(id: "codex-app-session-1")
+        #expect(updated?.codexMetadata?.lastUserPrompt == "紫微应该看到这条 Codex.app 消息。")
+        #expect(updated?.summary == "Prompt: 紫微应该看到这条 Codex.app 消息。")
+        #expect(updated?.phase == .running)
+    }
+
+    @Test
+    func monitoringTicksCodexAppRediscoveryWhileAppRemainsRunning() {
+        let monitoring = ProcessMonitoringCoordinator()
+        monitoring.codexDesktopAppRunningProvider = { true }
+
+        var runningChanges: [Bool] = []
+        var observedRunningTicks = 0
+        monitoring.onCodexAppRunningChanged = { runningChanges.append($0) }
+        monitoring.onCodexAppRunningObserved = { observedRunningTicks += 1 }
+
+        monitoring.reconcileSessionAttachments(activeProcesses: [])
+        monitoring.reconcileSessionAttachments(activeProcesses: [])
+
+        #expect(runningChanges == [true])
+        #expect(observedRunningTicks == 2)
+    }
+
+    @Test
     func freshCompletedSessionsSortAheadOfV8StaleCompletedSessions() {
         let now = Date()
         let model = AppModel()
@@ -1248,4 +1322,32 @@ struct AppModelSessionListTests {
             overlayFrame: NSRect(x: 400, y: 820, width: 700, height: 160)
         )
     }
+}
+
+private func appendRolloutLine(_ line: String, to fileURL: URL) throws {
+    guard let data = "\(line)\n".data(using: .utf8) else {
+        return
+    }
+
+    let handle = try FileHandle(forWritingTo: fileURL)
+    defer {
+        try? handle.close()
+    }
+
+    try handle.seekToEnd()
+    try handle.write(contentsOf: data)
+}
+
+private func rolloutLine(
+    timestamp: String,
+    type: String,
+    payload: [String: Any]
+) -> String {
+    let object: [String: Any] = [
+        "timestamp": timestamp,
+        "type": type,
+        "payload": payload,
+    ]
+    let data = try! JSONSerialization.data(withJSONObject: object, options: [.sortedKeys])
+    return String(data: data, encoding: .utf8)!
 }
