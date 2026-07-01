@@ -1621,6 +1621,14 @@ final class AppModel {
             return
         }
 
+        // 权限审批和问答弹窗需要用户当场响应，Claude 会阻塞等待答复。
+        // 不论终端是否在前台，都必须立刻弹出，不进抑制队列。
+        // 仅 completion 类通知（session.phase == .completed）才走静默逻辑。
+        if session.phase.requiresAttention {
+            presentNotificationSurface(surface)
+            return
+        }
+
         notificationPresentationTask?.cancel()
         notificationPresentationTask = Task { @MainActor [weak self] in
             guard let self else {
