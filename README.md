@@ -14,7 +14,7 @@
 
 ## ⬇️ 下载安装 / Download & Install
 
-**[👉 点这里下载最新版（紫微-VibeScope-v1.0.0.zip）](https://github.com/yismo1359413951/vibescope/releases/latest/download/紫微-VibeScope-v1.0.0.zip)**
+**[👉 点这里下载最新版 / Download latest（ZiweiVibeScope-v1.0.0.zip）](https://github.com/yismo1359413951/vibescope/releases/latest/download/ZiweiVibeScope-v1.0.0.zip)**
 
 不需要写代码，下载解压就能用。/ No coding needed — just download and unzip.
 
