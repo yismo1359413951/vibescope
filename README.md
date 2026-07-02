@@ -12,6 +12,30 @@
 
 ---
 
+## ⬇️ 下载安装 / Download & Install
+
+**[👉 点这里下载最新版（紫微-VibeScope-v1.0.0.zip）](https://github.com/yismo1359413951/vibescope/releases/latest/download/紫微-VibeScope-v1.0.0.zip)**
+
+不需要写代码，下载解压就能用。/ No coding needed — just download and unzip.
+
+**中文步骤：**
+1. 点上面链接下载 `.zip`，解压得到 `紫微 VibeScope.app`
+2. 把 app 拖进「应用程序」文件夹
+3. **第一次打开**：右键点 app → 选「打开」→ 弹窗里再点「打开」（macOS 安全提示，只需一次）
+4. app 启动后，点菜单栏图标 → 「安装 Claude 钩子」
+5. **开一个新的 Claude Code 对话**，岛就会自动出现 ✨
+
+**English steps:**
+1. Download the `.zip` above and unzip to get `紫微 VibeScope.app`
+2. Drag the app into your Applications folder
+3. **First launch**: right-click the app → Open → click Open again in the dialog (macOS security prompt, once only)
+4. After launch, click the menu bar icon → "Install Claude Hooks"
+5. **Start a new Claude Code conversation** and the island appears ✨
+
+> 系统要求 / Requirements：macOS 13+，Claude Code CLI 或桌面端 App
+
+---
+
 ## 🇨🇳 中文
 
 **写在前面**
