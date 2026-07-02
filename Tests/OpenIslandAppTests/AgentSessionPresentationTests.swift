@@ -210,7 +210,7 @@ struct AgentSessionPresentationTests {
 
         // Headline uses initial prompt (session topic), prompt line uses latest
         #expect(session.spotlightHeadlineText == "worktree · Start by fixing the island hover behavior.")
-        #expect(session.spotlightPromptLineText == "You: Now make the overlay height fit the content.")
+        #expect(session.spotlightPromptLineText == "你：Now make the overlay height fit the content.")
     }
 
     @Test
@@ -232,7 +232,7 @@ struct AgentSessionPresentationTests {
         )
 
         #expect(session.spotlightHeadlineText == "worktree · Start by fixing the island hover behavior.")
-        #expect(session.spotlightPromptLineText == "You: Now make the overlay height fit the content.")
+        #expect(session.spotlightPromptLineText == "你：Now make the overlay height fit the content.")
     }
 
     @Test
@@ -262,7 +262,7 @@ struct AgentSessionPresentationTests {
         )
 
         #expect(session.spotlightHeadlineText == "worktree · Commit the README change.")
-        #expect(session.spotlightPromptLineText == "You: Also confirm the worktree status.")
+        #expect(session.spotlightPromptLineText == "你：Also confirm the worktree status.")
         #expect(session.notificationHeaderPromptLineText == nil)
     }
 
@@ -282,7 +282,7 @@ struct AgentSessionPresentationTests {
             )
         )
 
-        #expect(session.spotlightPromptLineText == "You: Align the Codex statuses.")
+        #expect(session.spotlightPromptLineText == "你：Align the Codex statuses.")
         #expect(session.spotlightActivityLineText == "Thinking")
         #expect(session.displayCurrentToolName == nil)
     }

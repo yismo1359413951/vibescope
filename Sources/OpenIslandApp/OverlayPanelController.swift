@@ -87,7 +87,11 @@ final class OverlayPanelController {
         panel.acceptsMouseMovedEvents = interactive
 
         if interactive {
-            presentPanel(panel, activates: Self.shouldActivatePanel(for: model?.notchOpenReason))
+            // Always activate when interactive so buttons receive clicks.
+            // shouldActivatePanel (click-only) is intentionally bypassed here —
+            // permission / question cards need key-window status regardless of
+            // how the overlay was opened.
+            presentPanel(panel, activates: true)
         }
     }
 
